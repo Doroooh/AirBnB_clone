@@ -1,19 +1,20 @@
 #!/usr/bin/python3
-"""Defines the User class."""
 from models.base_model import BaseModel
 
+class UserProfile(BaseModel):
+    """Defines a UserProfile object.
 
-class User(BaseModel):
-    """Represent a User.
+    This class represents a user's profile information, including their email,
+    password, first name, and last name.
 
     Attributes:
-        email (str): The email of the user.
-        password (str): The password of the user.
-        first_name (str): The first name of the user.
-        last_name (str): The last name of the user.
+        email (str): The email address associated with the user's account.
+        password (str): The hashed password for the user's account.
+        first_name (str): The user's first name.
+        last_name (str): The user's last name.
     """
 
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+    email_address = ""
+    hashed_password = ""
+    given_name = ""
+    family_name = ""
