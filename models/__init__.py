@@ -1,6 +1,10 @@
 #!/usr/bin/python3
-"""__init__ magic is the technique to initialize for models directory"""
+"""
+this is what will instantiate the object of my class FileStorage and it then reloads it.
+"""
+
 from models.engine.file_storage import FileStorage
 
-storage = FileStorage()
-storage.reload()
+if __name__ == "__main__":
+    storage = FileStorage()
+    storage.reload()
