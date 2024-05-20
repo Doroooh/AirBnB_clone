@@ -1,12 +1,8 @@
 #!/usr/bin/python3
-"""this is defining my Amenity class."""
+"""this is thetate module for HBNB project."""
 from models.base_model import BaseModel
 
 class Amenity(BaseModel):
-    """Represents the amenity.
-
-    Attributes:
-        name (str): This is the name of the amenity.
-    """
+    """Defining the Amenity class for my project"""
 
     name = ""
