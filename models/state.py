@@ -1,12 +1,7 @@
 #!/usr/bin/python3
-"""Defining State class."""
+""" definition for the state module for the project """
 from models.base_model import BaseModel
 
 class State(BaseModel):
-    """Represents the state where project is at
-
-    Attributes:
-        name (str): Name of state.
-    """
-
+    """the state class, the name is a string """
     name = ""

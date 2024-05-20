@@ -17,4 +17,4 @@ class UserProfile(BaseModel):
     email_address = ""
     hashed_password = ""
     given_name = ""
-    family_name = ""
+    family_name = "
