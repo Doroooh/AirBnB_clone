@@ -1,50 +1,55 @@
 #!/usr/bin/python3
+"""Defining the class in managing file storage for my project"""
 import json
-from models.base_model import BaseModel
-from models.user_profile import UserProfile
-from models.state_entity import StateEntity
-from models.city_entity import CityEntity
-from models.place_entity import PlaceEntity
-from models.amenity_entity import AmenityEntity
-from models.review_entity import ReviewEntity
+import os
+import base64
 
-
-class StorageManager:
-    """Represents an abstracted storage engine.
-
-    This class stores and retrieves objects in a JSON file.
-
-    Attributes:
-        __file_path (str): The name of the file to save objects to.
-        __objects (dict): A dictionary of instantiated objects.
-    """
-    __file_path = "file.json"
+class FileStorage:
+    """The class manages the storage of the airbnb project models in an encrypted JSON format"""
+    __file_path = 'file.json'
     __objects = {}
+    __encryption_key = 'my_secret_key'
 
-    def __get_all(self):
-        """Return the dictionary __objects."""
-        return StorageManager.__objects
+    def all(self):
+        """Returning the dictionary of the models that are currently in storage"""
+        return FileStorage.__objects
 
-    def __set_new(self, obj):
-        """Set in __objects obj with key <obj_class_name>.id"""
-        ocname = obj.__class__.__name__
-        StorageManager.__objects["{}.{}".format(ocname, obj.id)] = obj
+    def new(self, obj):
+        """Adding new object to the storage dictionary"""
+        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
-    def save_objects(self):
-        """Serialize __objects to the JSON file __file_path."""
-        odict = StorageManager.__objects
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
-        with open(StorageManager.__file_path, "w") as f:
-            json.dump(objdict, f)
+    def save(self):
+        """Saving the storage dictionary to the encrypted file"""
+        with open(FileStorage.__file_path, 'wb') as f:
+            temp = {}
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
+                temp[key] = val.to_dict()
+            encrypted_data = base64.b64encode(json.dumps(temp).encode()).decode()
+            f.write(encrypted_data)
 
-    def load_objects(self):
-        """Deserialize the JSON file __file_path to __objects, if it exists."""
+    def reload(self):
+        """Loading the storage dictionary from the encrypted file"""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
+
+        classes = {
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
-            with open(StorageManager.__file_path) as f:
-                objdict = json.load(f)
-                for o in objdict.values():
-                    cls_name = o["__class__"]
-                    del o["__class__"]
-                    self.__set_new(eval(cls_name)(**o))
+            temp = {}
+            with open(FileStorage.__file_path, 'rb') as f:
+                encrypted_data = f.read().decode()
+                decrypted_data = base64.b64decode(encrypted_data).decode()
+                temp = json.loads(decrypted_data)
+                for key, val in temp.items():
+                        self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
-            return
+            pass
