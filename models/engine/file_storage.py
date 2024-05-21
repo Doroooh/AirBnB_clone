@@ -1,55 +1,48 @@
 #!/usr/bin/python3
-"""Defining the class in managing file storage for my project"""
+"""defining the location interpreter"""
 import json
-import os
-import base64
+import os.path
+from ..base_model import BaseModel
+from ..user import User
+from ..state import State
+from ..place import Place
+from ..amenity import Amenity
+from ..city import City
+from ..review import Review
+"""import models"""
 
 class FileStorage:
-    """The class manages the storage of the airbnb project models in an encrypted JSON format"""
-    __file_path = 'file.json'
+    """This is serializing instances to a JSON file
+    and deserializes JSON file to instances"""
+    __file_path = "file.json"
     __objects = {}
-    __encryption_key = 'my_secret_key'
+    """the private class attributes"""
 
     def all(self):
-        """Returning the dictionary of the models that are currently in storage"""
+        """this is the public instance attributes or the method to return dictionary __objects"""
         return FileStorage.__objects
 
     def new(self, obj):
-        """Adding new object to the storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        """The public instance sets in __objects
+        the obj with mykey <obj class name>.id"""
+        mykey = "{}.{}".format(obj.__class__.__name__, obj.id)
+        FileStorage.__objects[mykey] = obj
 
     def save(self):
-        """Saving the storage dictionary to the encrypted file"""
-        with open(FileStorage.__file_path, 'wb') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            encrypted_data = base64.b64encode(json.dumps(temp).encode()).decode()
-            f.write(encrypted_data)
+        """the public instance method to serialize
+        __objects to JSON file"""
+        dict_temp = {}
+        for mykey, value in FileStorage.__objects.items():
+            dict_temp[mykey] = value.to_dict()
+            with open(FileStorage.__file_path, "w") as f:
+                f.write(json.dumps(dict_temp))
 
     def reload(self):
-        """Loading the storage dictionary from the encrypted file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'rb') as f:
-                encrypted_data = f.read().decode()
-                decrypted_data = base64.b64decode(encrypted_data).decode()
-                temp = json.loads(decrypted_data)
-                for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
+        """it deserializes
+        the JSON file to __objects"""
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path, "r") as f:
+                dict_temp = json.loads(f.read())
+                for mykey, value in dict_temp.items():
+                    obj = eval(value['__class__'])(**value)
+                    FileStorage.__objects[mykey] = obj
