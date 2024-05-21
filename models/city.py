@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-"""the city module for the airbnb HBNB project."""
+"""defining interpreter location"""
 from models.base_model import BaseModel
-
+"""import models"""
 
 class City(BaseModel):
-    """Defining the City class."""
-
+    """This is the main class inherited of BaseModel that will manage Cities"""
     state_id = ""
     name = ""
