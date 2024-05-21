@@ -1,19 +1,94 @@
 #!/usr/bin/python3
-"""Testing the suit for amenities"""
+"""the unittest for place"""
+
+
+from models.review import Review
+import pep8
 import os
-import models
 import unittest
-from datetime import datetime
-from models.base_model import BaseModel
 
 
-class TestReview(unittest.TestCase):
-    """Testing for amenities"""
+class Test_Review(unittest.TestCase):
+    """test for class review"""
 
-    def test_name(self):
-        """Testing for name inputs"""
+    def test_docstring(self):
+        """Checking for docstring"""
+        self.assertTrue(len(Review.__doc__) > 1)
+        self.assertTrue(len(Review.__init__.__doc__) > 1)
+        self.assertTrue(len(Review.__str__.__doc__) > 1)
+        self.assertTrue(len(Review.save.__doc__) > 1)
+        self.assertTrue(len(Review.to_dict.__doc__) > 1)
+
+    def test_pep8(self):
+        """test pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        result = style.check_files(['models/review.py'])
+        self.assertEqual(result.total_errors, 0, "fix pep8")
+
+    def setUp(self):
+        """the test setup"""
         pass
 
+    def tearDown(self):
+        """the reset test"""
+        try:
+            os.remove("file.json")
+        except:
+            pass
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_init_arg(self):
+        """arg to new instance"""
+        b1 = Review(23)
+        self.assertEqual(type(b1).__name__, "Review")
+        self.assertFalse(hasattr(b1, "23"))
+
+    def test_init_kwarg(self):
+        """kwargs into the instance"""
+        b1 = Review(name="Betty")
+        self.assertEqual(type(b1).__name__, "Review")
+        self.assertTrue(hasattr(b1, "name"))
+        self.assertFalse(hasattr(b1, "id"))
+        self.assertFalse(hasattr(b1, "created_at"))
+        self.assertFalse(hasattr(b1, "updated_at"))
+        self.assertTrue(hasattr(b1, "__class__"))
+
+    def test_str_method(self):
+        """Tests for accurate printing"""
+        b1 = Review()
+        b1printed = b1.__str__()
+        self.assertEqual(b1printed,
+                         "[Review] ({}) {}".format(b1.id, b1.__dict__))
+
+    def test_before_todict(self):
+        """instances before using to_dict conversion"""
+        b1 = Review()
+        b1_dict = b1.__dict__
+        self.assertEqual(type(b1).__name__, "Review")
+        self.assertTrue(hasattr(b1, '__class__'))
+        self.assertEqual(str(b1.__class__),
+                         "<class 'models.review.Review'>")
+        self.assertTrue(type(b1_dict['created_at']), 'datetime.datetime')
+        self.assertTrue(type(b1_dict['updated_at']), 'datetime.datetime')
+        self.assertTrue(type(b1_dict['id']), 'str')
+
+    def test_after_todict(self):
+        """instances after using to_dict conversion"""
+        my_model = Review()
+        new_model = Review()
+        test_dict = my_model.to_dict()
+        self.assertIsInstance(my_model, Review)
+        self.assertEqual(type(my_model).__name__, "Review")
+        self.assertEqual(test_dict['__class__'], "Review")
+        self.assertTrue(type(test_dict['__class__']), 'str')
+        self.assertTrue(type(test_dict['created_at']), 'str')
+        self.assertTrue(type(test_dict['updated_at']), 'str')
+        self.assertTrue(type(test_dict['id']), 'str')
+        self.assertNotEqual(my_model.id, new_model.id)
+
+    def test_hasattribute(self):
+        """Correctly made instance of the BaseModel"""
+        b1 = Review()
+        self.assertTrue(hasattr(b1, "__init__"))
+        self.assertTrue(hasattr(b1, "created_at"))
+        self.assertTrue(hasattr(b1, "updated_at"))
+        self.assertTrue(hasattr(b1, "id"))
