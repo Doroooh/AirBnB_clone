@@ -1,66 +1,24 @@
 #!/usr/bin/python3
-"""
-Unit tests for this console are using a Mock module from the python standard library
-It checks the console to  capture stdout into a StringIO object
-"""
+"""The unittest for Console"""
 
-import os
+from console import HBNBCommand
 import sys
 import unittest
-from unittest.mock import create_autospec, patch
-from io import StringIO
-from console import HBNBCommand
-from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+from unittest.mock import create_autospec
 
-
-class TestConsole(unittest.TestCase):
-    """
-    the unittest for the airbnb console model
-    """
+class Test_Console(unittest.TestCase):
+    """The console Unittest"""
 
     def setUp(self):
-        """To redirect the stdin and stdout"""
+        """Setting up the STDIN and STDOUT"""
         self.mock_stdin = create_autospec(sys.stdin)
         self.mock_stdout = create_autospec(sys.stdout)
-        self.err = ["** the class name is missing **",
-                    "** the class does not exist **",
-                    "** instance for the id missing **",
-                    "** no instance is found **",
-                    ]
-
-        self.cls = ["BaseModel",
-                    "User",
-                    "State",
-                    "City",
-                    "Place",
-                    "Amenity",
-                    "Review"]
 
     def create(self, server=None):
-        """
-        Redirect the stdin and stdout to the mock module
-        """
+        """Creating the HBNBCommand"""
         return HBNBCommand(stdin=self.mock_stdin, stdout=self.mock_stdout)
 
-    def last_write(self, nr=None):
-        """Return the last and output lines"""
-        if nr is None:
-            return self.mock_stdout.write.call_args[0][0]
-        return "".join(map(lambda c: c[0][0],
-                           self.mock_stdout.write.call_args_list[-nr:]))
-
     def test_quit(self):
-        """the quit command"""
-        cli = self.create()
-        self.assertTrue(cli.onecmd("quit"))
-
-
-if __name__ == '__main__':
-    unittest.main()
+        """Testing the quit command in my project"""
+        xit = self.create()
+        self.assertTrue(xit.onecmd("quit"))
