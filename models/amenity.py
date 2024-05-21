@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-"""this is thetate module for HBNB project."""
+"""This defines location of the interpreter in my project"""
 from models.base_model import BaseModel
+""" import modules """
 
 class Amenity(BaseModel):
-    """Defining the Amenity class for my project"""
-
+    """ This is the main class for managing the amenities that are inherited of the BaseModel """
     name = ""
