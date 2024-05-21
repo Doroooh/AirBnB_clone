@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-""" definition for the state module for the project """
+"""location interpreter"""
 from models.base_model import BaseModel
+"""import models"""
 
 class State(BaseModel):
-    """the state class, the name is a string """
+    """ Managing the states"""
     name = ""

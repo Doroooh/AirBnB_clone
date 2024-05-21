@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 
 class Place(BaseModel):
 """Managing the Places, it's inherited of BaseModel """
-    thecity_id = ""
+    city_id = ""
     user_id = ""
     name = ""
     description = ""

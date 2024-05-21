@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Review module for my  project """
+"""interpreator location"""
 from models.base_model import BaseModel
-
+"""import models"""
 
 class Review(BaseModel):
-    """ Reviews the  class, storing the review information from the customers """
+""" managing consumer Reviews"""
     place_id = ""
     user_id = ""
     text = ""
