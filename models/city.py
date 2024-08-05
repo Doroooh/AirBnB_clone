@@ -1,9 +1,21 @@
 #!/usr/bin/python3
-"""defining interpreter location"""
+
+""" The class City """
 from models.base_model import BaseModel
-"""import models"""
+
 
 class City(BaseModel):
-    """This is the main class inherited of BaseModel that will manage Cities"""
+    """ The class City that inherits BaseModel
+        Public class attribute
+            state_id: (str) - State.id
+            name: (str) - City name
+    """
     state_id = ""
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        """ Initializing City
+            Args:
+                *args: list of strings
+                **kwargs: dictionary of strings"""
+        super().__init__(*args, **kwargs)
