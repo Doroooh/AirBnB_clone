@@ -1,8 +1,20 @@
 #!/usr/bin/python3
-"""This defines location of the interpreter in my project"""
+
+""" The class amenity """
 from models.base_model import BaseModel
-""" import modules """
 
 class Amenity(BaseModel):
-    """ This is the main class for managing the amenities that are inherited of the BaseModel """
+    """ The class amenity will inherit the BaseModel
+        Public class attribute
+            name: (string) - the amenity name
+    """
+    
     name = ""
+    
+    def __init__(self, *args, **kwargs):
+        """ Initializing Amenity
+            Args:
+                *args: The list of strings
+                **kwargs: The dictionary of strings
+        """
+        super().__init__(*args, **kwargs)
