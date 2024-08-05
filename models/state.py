@@ -1,8 +1,19 @@
 #!/usr/bin/python3
-"""location interpreter"""
+
+""" Class place"""
 from models.base_model import BaseModel
-"""import models"""
 
 class State(BaseModel):
-    """ Managing the states"""
+    """ Class place that inherits from BaseModel
+        Public class attributes:
+            name: (str) - Name of the state
+    """
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        """ Initialize class attributes
+            Args:
+                *args: list of strings
+                **kwargs: dictionary of strings
+        """
+        super().__init__(*args, **kwargs)
