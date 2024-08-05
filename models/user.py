@@ -1,11 +1,26 @@
 #!/usr/bin/python3
-"""location interpreter"""
+
+""" Class User """
 from models.base_model import BaseModel
-"""import models"""
+
 
 class User(BaseModel):
-    """It manages the users, that is consumers"""
+    """ Class user that inherits from BaseModel
+        Public class attributes:
+            email: (str) - user's email
+            password: (str) - user's password
+            first_name: (str) - user's first name
+            last_name: (str) - user's last name
+    """
     email = ""
     password = ""
     first_name = ""
     last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """ Initialize class User
+            Args:
+                *args: list of strings
+                **kwargs: dictionary of strings
+                """
+        super().__init__(*args, **kwargs)
