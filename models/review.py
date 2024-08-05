@@ -1,10 +1,23 @@
 #!/usr/bin/python3
-"""interpreator location"""
+
+""" The class Review"""
 from models.base_model import BaseModel
-"""import models"""
 
 class Review(BaseModel):
-""" managing consumer Reviews"""
+    """ The public class attributes:
+
+    place_id: string - (str): Place.id
+    user_id: string - (str): User.id
+    text: string - (str): text of the review
+    """
     place_id = ""
     user_id = ""
     text = ""
+
+    def __init__(self, *args, **kwargs):
+        """ Initialize a Review instance
+            Args:
+                *args: list of strings
+                **kwargs: dictionary of strings
+        """
+        super().__init__(*args, **kwargs)
